@@ -8,11 +8,14 @@ import (
 	"time"
 )
 
+var versions = "Jason dev 1.0"
+
 func main() {
 	// 定义变量 -> 定义参数 -> 有默认值
 	host := flag.String("host", "127.0.0.1", "host to check")
 	prot := flag.Int("port", 80, "port to check")
 	timeout := flag.Duration("timeout", 3*time.Second, "timeout")
+	version := flag.Bool("version", false, "print version and exit")
 
 	// 解析
 	flag.Parse()
@@ -26,6 +29,11 @@ func main() {
 	// 格式化
 	addr := fmt.Sprintf("%s:%d", *host, *prot)
 
+	// 版本
+	if *version {
+		fmt.Println("version", versions)
+		os.Exit(0)
+	}
 	// 端口探测
 	conn, err := net.DialTimeout("tcp", addr, *timeout)
 	if err != nil {
